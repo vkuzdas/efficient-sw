@@ -1,0 +1,82 @@
+ires
+
+Size of one list element: 40
+Reads: 2226334     Writes: 947       
+Reads: 2232894     Writes: 947       
+Reads: 2197491     Writes: 948       
+Size of one list element: 40
+Reads: 3178524     Writes: 947       
+Reads: 3157072     Writes: 947       
+Reads: 3168240     Writes: 948       
+Size of one list element: 40
+Reads: 4231004     Writes: 946       
+Reads: 3937694     Writes: 947       
+Reads: 3815483     Writes: 947       
+Size of one list element: 40
+Reads: 3921561     Writes: 946       
+Reads: 3528513     Writes: 946       
+Reads: 3548998     Writes: 947       
+Size of one list element: 40
+Reads: 3771549     Writes: 946       
+Reads: 3375785     Writes: 945       
+Reads: 3454862     Writes: 946       
+Size of one list element: 40
+Reads: 4140790     Writes: 945       
+Reads: 3989994     Writes: 946       
+Reads: 3917493     Writes: 945       
+Size of one list element: 40
+Reads: 3767395     Writes: 944       
+Reads: 3451434     Writes: 945       
+Reads: 3448553     Writes: 944       
+Size of one list element: 40
+Reads: 4163201     Writes: 944       
+Reads: 3860509     Writes: 944       
+Reads: 3401277     Writes: 944       
+Size of one list element: 40
+Reads: 4073568     Writes: 944       
+Reads: 3574965     Writes: 944       
+Reads: 3573058     Writes: 945       
+Size of one list element: 40
+Reads: 4333206     Writes: 943       
+Reads: 3473390     Writes: 942       
+Reads: 3464608     Writes: 943       
+Size of one list element: 40
+Reads: 4416346     Writes: 943       
+Reads: 3605657     Writes: 943       
+Reads: 3601151     Writes: 943       
+Size of one list element: 40
+Reads: 4512369     Writes: 942       
+Reads: 3621099     Writes: 942       
+Reads: 3586669     Writes: 941       
+Size of one list element: 40
+Reads: 4914349     Writes: 943       
+Reads: 3808264     Writes: 942       
+Reads: 3746662     Writes: 943       
+Size of one list element: 40
+Reads: 4796587     Writes: 942       
+Reads: 3801491     Writes: 940       
+Reads: 3849299     Writes: 942       
+Size of one list element: 40
+Reads: 4746421     Writes: 942       
+Reads: 3732165     Writes: 939       
+Reads: 3643234     Writes: 940       
+Size of one list element: 40
+Reads: 4976165     Writes: 941       
+Reads: 4142696     Writes: 939       
+Reads: 4070366     Writes: 938       
+Size of one list element: 40
+Reads: 4318284     Writes: 939       
+Reads: 4068259     Writes: 938       
+Reads: 3917764     Writes: 937       
+Size of one list element: 40
+Reads: 4401486     Writes: 940       
+Reads: 4071867     Writes: 939       
+Reads: 3999693     Writes: 938       
+Size of one list element: 40
+Reads: 4387133     Writes: 939       
+Reads: 4136107     Writes: 939       
+Reads: 4104597     Writes: 937       
+Size of one list element: 40
+Reads: 4208821     Writes: 933       
+Reads: 4094914     Writes: 937       
+Reads: 4087936     Writes: 938       

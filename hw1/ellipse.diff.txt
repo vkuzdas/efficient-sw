@@ -1,0 +1,97 @@
+diff --git a/ellipse/ellipse.cpp b/ellipse/ellipse.cpp
+index ff74de7..5b74a22 100644
+--- a/ellipse/ellipse.cpp
++++ b/ellipse/ellipse.cpp
+@@ -21,6 +21,7 @@
+ 
+ #include "ellipse.h"
+ #include "table3x3.hpp"
++#include <iostream>
+ 
+ using namespace cv;
+ 
+@@ -106,7 +107,7 @@ Ellipse::Ellipse(double a, double b, double c, double d, double f, double g)
+         angle += 90;
+     }
+ 
+-    double temp_c = sqrt(size.width/2 * size.width/2 - size.height/2 * size.height/2);
++    double temp_c = sqrt(size.width*0.5 * size.width*0.5 - size.height*0.5 * size.height*0.5);
+     f1.x = center.x - temp_c * cos(angle*M_PI/180);
+     f1.y = center.y - temp_c * sin(angle*M_PI/180);
+     f2.x = center.x + temp_c * cos(angle*M_PI/180);
+@@ -117,19 +118,24 @@ Ellipse::Ellipse(Point2f center, Size2f size, float angle)
+     : cv::RotatedRect(center, size, angle)
+ {}
+ 
+-Point Ellipse::pointAtAngle(double a, Vec2f *normal = 0) const
++const double cos_arr[]{
++        cos(0/180.0*M_PI),cos(1/180.0*M_PI),cos(2/180.0*M_PI),cos(3/180.0*M_PI),cos(4/180.0*M_PI),cos(5/180.0*M_PI),cos(6/180.0*M_PI),cos(7/180.0*M_PI),cos(8/180.0*M_PI),cos(9/180.0*M_PI),cos(10/180.0*M_PI),cos(11/180.0*M_PI),cos(12/180.0*M_PI),cos(13/180.0*M_PI),cos(14/180.0*M_PI),cos(15/180.0*M_PI),cos(16/180.0*M_PI),cos(17/180.0*M_PI),cos(18/180.0*M_PI),cos(19/180.0*M_PI),cos(20/180.0*M_PI),cos(21/180.0*M_PI),cos(22/180.0*M_PI),cos(23/180.0*M_PI),cos(24/180.0*M_PI),cos(25/180.0*M_PI),cos(26/180.0*M_PI),cos(27/180.0*M_PI),cos(28/180.0*M_PI),cos(29/180.0*M_PI),cos(30/180.0*M_PI),cos(31/180.0*M_PI),cos(32/180.0*M_PI),cos(33/180.0*M_PI),cos(34/180.0*M_PI),cos(35/180.0*M_PI),cos(36/180.0*M_PI),cos(37/180.0*M_PI),cos(38/180.0*M_PI),cos(39/180.0*M_PI),cos(40/180.0*M_PI),cos(41/180.0*M_PI),cos(42/180.0*M_PI),cos(43/180.0*M_PI),cos(44/180.0*M_PI),cos(45/180.0*M_PI),cos(46/180.0*M_PI),cos(47/180.0*M_PI),cos(48/180.0*M_PI),cos(49/180.0*M_PI),cos(50/180.0*M_PI),cos(51/180.0*M_PI),cos(52/180.0*M_PI),cos(53/180.0*M_PI),cos(54/180.0*M_PI),cos(55/180.0*M_PI),cos(56/180.0*M_PI),cos(57/180.0*M_PI),cos(58/180.0*M_PI),cos(59/180.0*M_PI),cos(60/180.0*M_PI),cos(61/180.0*M_PI),cos(62/180.0*M_PI),cos(63/180.0*M_PI),cos(64/180.0*M_PI),cos(65/180.0*M_PI),cos(66/180.0*M_PI),cos(67/180.0*M_PI),cos(68/180.0*M_PI),cos(69/180.0*M_PI),cos(70/180.0*M_PI),cos(71/180.0*M_PI),cos(72/180.0*M_PI),cos(73/180.0*M_PI),cos(74/180.0*M_PI),cos(75/180.0*M_PI),cos(76/180.0*M_PI),cos(77/180.0*M_PI),cos(78/180.0*M_PI),cos(79/180.0*M_PI),cos(80/180.0*M_PI),cos(81/180.0*M_PI),cos(82/180.0*M_PI),cos(83/180.0*M_PI),cos(84/180.0*M_PI),cos(85/180.0*M_PI),cos(86/180.0*M_PI),cos(87/180.0*M_PI),cos(88/180.0*M_PI),cos(89/180.0*M_PI),cos(90/180.0*M_PI),cos(91/180.0*M_PI),cos(92/180.0*M_PI),cos(93/180.0*M_PI),cos(94/180.0*M_PI),cos(95/180.0*M_PI),cos(96/180.0*M_PI),cos(97/180.0*M_PI),cos(98/180.0*M_PI),cos(99/180.0*M_PI),cos(100/180.0*M_PI),cos(101/180.0*M_PI),cos(102/180.0*M_PI),cos(103/180.0*M_PI),cos(104/180.0*M_PI),cos(105/180.0*M_PI),cos(106/180.0*M_PI),cos(107/180.0*M_PI),cos(108/180.0*M_PI),cos(109/180.0*M_PI),cos(110/180.0*M_PI),cos(111/180.0*M_PI),cos(112/180.0*M_PI),cos(113/180.0*M_PI),cos(114/180.0*M_PI),cos(115/180.0*M_PI),cos(116/180.0*M_PI),cos(117/180.0*M_PI),cos(118/180.0*M_PI),cos(119/180.0*M_PI),cos(120/180.0*M_PI),cos(121/180.0*M_PI),cos(122/180.0*M_PI),cos(123/180.0*M_PI),cos(124/180.0*M_PI),cos(125/180.0*M_PI),cos(126/180.0*M_PI),cos(127/180.0*M_PI),cos(128/180.0*M_PI),cos(129/180.0*M_PI),cos(130/180.0*M_PI),cos(131/180.0*M_PI),cos(132/180.0*M_PI),cos(133/180.0*M_PI),cos(134/180.0*M_PI),cos(135/180.0*M_PI),cos(136/180.0*M_PI),cos(137/180.0*M_PI),cos(138/180.0*M_PI),cos(139/180.0*M_PI),cos(140/180.0*M_PI),cos(141/180.0*M_PI),cos(142/180.0*M_PI),cos(143/180.0*M_PI),cos(144/180.0*M_PI),cos(145/180.0*M_PI),cos(146/180.0*M_PI),cos(147/180.0*M_PI),cos(148/180.0*M_PI),cos(149/180.0*M_PI),cos(150/180.0*M_PI),cos(151/180.0*M_PI),cos(152/180.0*M_PI),cos(153/180.0*M_PI),cos(154/180.0*M_PI),cos(155/180.0*M_PI),cos(156/180.0*M_PI),cos(157/180.0*M_PI),cos(158/180.0*M_PI),cos(159/180.0*M_PI),cos(160/180.0*M_PI),cos(161/180.0*M_PI),cos(162/180.0*M_PI),cos(163/180.0*M_PI),cos(164/180.0*M_PI),cos(165/180.0*M_PI),cos(166/180.0*M_PI),cos(167/180.0*M_PI),cos(168/180.0*M_PI),cos(169/180.0*M_PI),cos(170/180.0*M_PI),cos(171/180.0*M_PI),cos(172/180.0*M_PI),cos(173/180.0*M_PI),cos(174/180.0*M_PI),cos(175/180.0*M_PI),cos(176/180.0*M_PI),cos(177/180.0*M_PI),cos(178/180.0*M_PI),cos(179/180.0*M_PI),cos(180/180.0*M_PI),cos(181/180.0*M_PI),cos(182/180.0*M_PI),cos(183/180.0*M_PI),cos(184/180.0*M_PI),cos(185/180.0*M_PI),cos(186/180.0*M_PI),cos(187/180.0*M_PI),cos(188/180.0*M_PI),cos(189/180.0*M_PI),cos(190/180.0*M_PI),cos(191/180.0*M_PI),cos(192/180.0*M_PI),cos(193/180.0*M_PI),cos(194/180.0*M_PI),cos(195/180.0*M_PI),cos(196/180.0*M_PI),cos(197/180.0*M_PI),cos(198/180.0*M_PI),cos(199/180.0*M_PI),cos(200/180.0*M_PI),cos(201/180.0*M_PI),cos(202/180.0*M_PI),cos(203/180.0*M_PI),cos(204/180.0*M_PI),cos(205/180.0*M_PI),cos(206/180.0*M_PI),cos(207/180.0*M_PI),cos(208/180.0*M_PI),cos(209/180.0*M_PI),cos(210/180.0*M_PI),cos(211/180.0*M_PI),cos(212/180.0*M_PI),cos(213/180.0*M_PI),cos(214/180.0*M_PI),cos(215/180.0*M_PI),cos(216/180.0*M_PI),cos(217/180.0*M_PI),cos(218/180.0*M_PI),cos(219/180.0*M_PI),cos(220/180.0*M_PI),cos(221/180.0*M_PI),cos(222/180.0*M_PI),cos(223/180.0*M_PI),cos(224/180.0*M_PI),cos(225/180.0*M_PI),cos(226/180.0*M_PI),cos(227/180.0*M_PI),cos(228/180.0*M_PI),cos(229/180.0*M_PI),cos(230/180.0*M_PI),cos(231/180.0*M_PI),cos(232/180.0*M_PI),cos(233/180.0*M_PI),cos(234/180.0*M_PI),cos(235/180.0*M_PI),cos(236/180.0*M_PI),cos(237/180.0*M_PI),cos(238/180.0*M_PI),cos(239/180.0*M_PI),cos(240/180.0*M_PI),cos(241/180.0*M_PI),cos(242/180.0*M_PI),cos(243/180.0*M_PI),cos(244/180.0*M_PI),cos(245/180.0*M_PI),cos(246/180.0*M_PI),cos(247/180.0*M_PI),cos(248/180.0*M_PI),cos(249/180.0*M_PI),cos(250/180.0*M_PI),cos(251/180.0*M_PI),cos(252/180.0*M_PI),cos(253/180.0*M_PI),cos(254/180.0*M_PI),cos(255/180.0*M_PI),cos(256/180.0*M_PI),cos(257/180.0*M_PI),cos(258/180.0*M_PI),cos(259/180.0*M_PI),cos(260/180.0*M_PI),cos(261/180.0*M_PI),cos(262/180.0*M_PI),cos(263/180.0*M_PI),cos(264/180.0*M_PI),cos(265/180.0*M_PI),cos(266/180.0*M_PI),cos(267/180.0*M_PI),cos(268/180.0*M_PI),cos(269/180.0*M_PI),cos(270/180.0*M_PI),cos(271/180.0*M_PI),cos(272/180.0*M_PI),cos(273/180.0*M_PI),cos(274/180.0*M_PI),cos(275/180.0*M_PI),cos(276/180.0*M_PI),cos(277/180.0*M_PI),cos(278/180.0*M_PI),cos(279/180.0*M_PI),cos(280/180.0*M_PI),cos(281/180.0*M_PI),cos(282/180.0*M_PI),cos(283/180.0*M_PI),cos(284/180.0*M_PI),cos(285/180.0*M_PI),cos(286/180.0*M_PI),cos(287/180.0*M_PI),cos(288/180.0*M_PI),cos(289/180.0*M_PI),cos(290/180.0*M_PI),cos(291/180.0*M_PI),cos(292/180.0*M_PI),cos(293/180.0*M_PI),cos(294/180.0*M_PI),cos(295/180.0*M_PI),cos(296/180.0*M_PI),cos(297/180.0*M_PI),cos(298/180.0*M_PI),cos(299/180.0*M_PI),cos(300/180.0*M_PI),cos(301/180.0*M_PI),cos(302/180.0*M_PI),cos(303/180.0*M_PI),cos(304/180.0*M_PI),cos(305/180.0*M_PI),cos(306/180.0*M_PI),cos(307/180.0*M_PI),cos(308/180.0*M_PI),cos(309/180.0*M_PI),cos(310/180.0*M_PI),cos(311/180.0*M_PI),cos(312/180.0*M_PI),cos(313/180.0*M_PI),cos(314/180.0*M_PI),cos(315/180.0*M_PI),cos(316/180.0*M_PI),cos(317/180.0*M_PI),cos(318/180.0*M_PI),cos(319/180.0*M_PI),cos(320/180.0*M_PI),cos(321/180.0*M_PI),cos(322/180.0*M_PI),cos(323/180.0*M_PI),cos(324/180.0*M_PI),cos(325/180.0*M_PI),cos(326/180.0*M_PI),cos(327/180.0*M_PI),cos(328/180.0*M_PI),cos(329/180.0*M_PI),cos(330/180.0*M_PI),cos(331/180.0*M_PI),cos(332/180.0*M_PI),cos(333/180.0*M_PI),cos(334/180.0*M_PI),cos(335/180.0*M_PI),cos(336/180.0*M_PI),cos(337/180.0*M_PI),cos(338/180.0*M_PI),cos(339/180.0*M_PI),cos(340/180.0*M_PI),cos(341/180.0*M_PI),cos(342/180.0*M_PI),cos(343/180.0*M_PI),cos(344/180.0*M_PI),cos(345/180.0*M_PI),cos(346/180.0*M_PI),cos(347/180.0*M_PI),cos(348/180.0*M_PI),cos(349/180.0*M_PI),cos(350/180.0*M_PI),cos(351/180.0*M_PI),cos(352/180.0*M_PI),cos(353/180.0*M_PI),cos(354/180.0*M_PI),cos(355/180.0*M_PI),cos(356/180.0*M_PI),cos(357/180.0*M_PI),cos(358/180.0*M_PI),cos(359/180.0*M_PI)
++        ,sin(0/180.0*M_PI),sin(1/180.0*M_PI),sin(2/180.0*M_PI),sin(3/180.0*M_PI),sin(4/180.0*M_PI),sin(5/180.0*M_PI),sin(6/180.0*M_PI),sin(7/180.0*M_PI),sin(8/180.0*M_PI),sin(9/180.0*M_PI),sin(10/180.0*M_PI),sin(11/180.0*M_PI),sin(12/180.0*M_PI),sin(13/180.0*M_PI),sin(14/180.0*M_PI),sin(15/180.0*M_PI),sin(16/180.0*M_PI),sin(17/180.0*M_PI),sin(18/180.0*M_PI),sin(19/180.0*M_PI),sin(20/180.0*M_PI),sin(21/180.0*M_PI),sin(22/180.0*M_PI),sin(23/180.0*M_PI),sin(24/180.0*M_PI),sin(25/180.0*M_PI),sin(26/180.0*M_PI),sin(27/180.0*M_PI),sin(28/180.0*M_PI),sin(29/180.0*M_PI),sin(30/180.0*M_PI),sin(31/180.0*M_PI),sin(32/180.0*M_PI),sin(33/180.0*M_PI),sin(34/180.0*M_PI),sin(35/180.0*M_PI),sin(36/180.0*M_PI),sin(37/180.0*M_PI),sin(38/180.0*M_PI),sin(39/180.0*M_PI),sin(40/180.0*M_PI),sin(41/180.0*M_PI),sin(42/180.0*M_PI),sin(43/180.0*M_PI),sin(44/180.0*M_PI),sin(45/180.0*M_PI),sin(46/180.0*M_PI),sin(47/180.0*M_PI),sin(48/180.0*M_PI),sin(49/180.0*M_PI),sin(50/180.0*M_PI),sin(51/180.0*M_PI),sin(52/180.0*M_PI),sin(53/180.0*M_PI),sin(54/180.0*M_PI),sin(55/180.0*M_PI),sin(56/180.0*M_PI),sin(57/180.0*M_PI),sin(58/180.0*M_PI),sin(59/180.0*M_PI),sin(60/180.0*M_PI),sin(61/180.0*M_PI),sin(62/180.0*M_PI),sin(63/180.0*M_PI),sin(64/180.0*M_PI),sin(65/180.0*M_PI),sin(66/180.0*M_PI),sin(67/180.0*M_PI),sin(68/180.0*M_PI),sin(69/180.0*M_PI),sin(70/180.0*M_PI),sin(71/180.0*M_PI),sin(72/180.0*M_PI),sin(73/180.0*M_PI),sin(74/180.0*M_PI),sin(75/180.0*M_PI),sin(76/180.0*M_PI),sin(77/180.0*M_PI),sin(78/180.0*M_PI),sin(79/180.0*M_PI),sin(80/180.0*M_PI),sin(81/180.0*M_PI),sin(82/180.0*M_PI),sin(83/180.0*M_PI),sin(84/180.0*M_PI),sin(85/180.0*M_PI),sin(86/180.0*M_PI),sin(87/180.0*M_PI),sin(88/180.0*M_PI),sin(89/180.0*M_PI),sin(90/180.0*M_PI),sin(91/180.0*M_PI),sin(92/180.0*M_PI),sin(93/180.0*M_PI),sin(94/180.0*M_PI),sin(95/180.0*M_PI),sin(96/180.0*M_PI),sin(97/180.0*M_PI),sin(98/180.0*M_PI),sin(99/180.0*M_PI),sin(100/180.0*M_PI),sin(101/180.0*M_PI),sin(102/180.0*M_PI),sin(103/180.0*M_PI),sin(104/180.0*M_PI),sin(105/180.0*M_PI),sin(106/180.0*M_PI),sin(107/180.0*M_PI),sin(108/180.0*M_PI),sin(109/180.0*M_PI),sin(110/180.0*M_PI),sin(111/180.0*M_PI),sin(112/180.0*M_PI),sin(113/180.0*M_PI),sin(114/180.0*M_PI),sin(115/180.0*M_PI),sin(116/180.0*M_PI),sin(117/180.0*M_PI),sin(118/180.0*M_PI),sin(119/180.0*M_PI),sin(120/180.0*M_PI),sin(121/180.0*M_PI),sin(122/180.0*M_PI),sin(123/180.0*M_PI),sin(124/180.0*M_PI),sin(125/180.0*M_PI),sin(126/180.0*M_PI),sin(127/180.0*M_PI),sin(128/180.0*M_PI),sin(129/180.0*M_PI),sin(130/180.0*M_PI),sin(131/180.0*M_PI),sin(132/180.0*M_PI),sin(133/180.0*M_PI),sin(134/180.0*M_PI),sin(135/180.0*M_PI),sin(136/180.0*M_PI),sin(137/180.0*M_PI),sin(138/180.0*M_PI),sin(139/180.0*M_PI),sin(140/180.0*M_PI),sin(141/180.0*M_PI),sin(142/180.0*M_PI),sin(143/180.0*M_PI),sin(144/180.0*M_PI),sin(145/180.0*M_PI),sin(146/180.0*M_PI),sin(147/180.0*M_PI),sin(148/180.0*M_PI),sin(149/180.0*M_PI),sin(150/180.0*M_PI),sin(151/180.0*M_PI),sin(152/180.0*M_PI),sin(153/180.0*M_PI),sin(154/180.0*M_PI),sin(155/180.0*M_PI),sin(156/180.0*M_PI),sin(157/180.0*M_PI),sin(158/180.0*M_PI),sin(159/180.0*M_PI),sin(160/180.0*M_PI),sin(161/180.0*M_PI),sin(162/180.0*M_PI),sin(163/180.0*M_PI),sin(164/180.0*M_PI),sin(165/180.0*M_PI),sin(166/180.0*M_PI),sin(167/180.0*M_PI),sin(168/180.0*M_PI),sin(169/180.0*M_PI),sin(170/180.0*M_PI),sin(171/180.0*M_PI),sin(172/180.0*M_PI),sin(173/180.0*M_PI),sin(174/180.0*M_PI),sin(175/180.0*M_PI),sin(176/180.0*M_PI),sin(177/180.0*M_PI),sin(178/180.0*M_PI),sin(179/180.0*M_PI),sin(180/180.0*M_PI),sin(181/180.0*M_PI),sin(182/180.0*M_PI),sin(183/180.0*M_PI),sin(184/180.0*M_PI),sin(185/180.0*M_PI),sin(186/180.0*M_PI),sin(187/180.0*M_PI),sin(188/180.0*M_PI),sin(189/180.0*M_PI),sin(190/180.0*M_PI),sin(191/180.0*M_PI),sin(192/180.0*M_PI),sin(193/180.0*M_PI),sin(194/180.0*M_PI),sin(195/180.0*M_PI),sin(196/180.0*M_PI),sin(197/180.0*M_PI),sin(198/180.0*M_PI),sin(199/180.0*M_PI),sin(200/180.0*M_PI),sin(201/180.0*M_PI),sin(202/180.0*M_PI),sin(203/180.0*M_PI),sin(204/180.0*M_PI),sin(205/180.0*M_PI),sin(206/180.0*M_PI),sin(207/180.0*M_PI),sin(208/180.0*M_PI),sin(209/180.0*M_PI),sin(210/180.0*M_PI),sin(211/180.0*M_PI),sin(212/180.0*M_PI),sin(213/180.0*M_PI),sin(214/180.0*M_PI),sin(215/180.0*M_PI),sin(216/180.0*M_PI),sin(217/180.0*M_PI),sin(218/180.0*M_PI),sin(219/180.0*M_PI),sin(220/180.0*M_PI),sin(221/180.0*M_PI),sin(222/180.0*M_PI),sin(223/180.0*M_PI),sin(224/180.0*M_PI),sin(225/180.0*M_PI),sin(226/180.0*M_PI),sin(227/180.0*M_PI),sin(228/180.0*M_PI),sin(229/180.0*M_PI),sin(230/180.0*M_PI),sin(231/180.0*M_PI),sin(232/180.0*M_PI),sin(233/180.0*M_PI),sin(234/180.0*M_PI),sin(235/180.0*M_PI),sin(236/180.0*M_PI),sin(237/180.0*M_PI),sin(238/180.0*M_PI),sin(239/180.0*M_PI),sin(240/180.0*M_PI),sin(241/180.0*M_PI),sin(242/180.0*M_PI),sin(243/180.0*M_PI),sin(244/180.0*M_PI),sin(245/180.0*M_PI),sin(246/180.0*M_PI),sin(247/180.0*M_PI),sin(248/180.0*M_PI),sin(249/180.0*M_PI),sin(250/180.0*M_PI),sin(251/180.0*M_PI),sin(252/180.0*M_PI),sin(253/180.0*M_PI),sin(254/180.0*M_PI),sin(255/180.0*M_PI),sin(256/180.0*M_PI),sin(257/180.0*M_PI),sin(258/180.0*M_PI),sin(259/180.0*M_PI),sin(260/180.0*M_PI),sin(261/180.0*M_PI),sin(262/180.0*M_PI),sin(263/180.0*M_PI),sin(264/180.0*M_PI),sin(265/180.0*M_PI),sin(266/180.0*M_PI),sin(267/180.0*M_PI),sin(268/180.0*M_PI),sin(269/180.0*M_PI),sin(270/180.0*M_PI),sin(271/180.0*M_PI),sin(272/180.0*M_PI),sin(273/180.0*M_PI),sin(274/180.0*M_PI),sin(275/180.0*M_PI),sin(276/180.0*M_PI),sin(277/180.0*M_PI),sin(278/180.0*M_PI),sin(279/180.0*M_PI),sin(280/180.0*M_PI),sin(281/180.0*M_PI),sin(282/180.0*M_PI),sin(283/180.0*M_PI),sin(284/180.0*M_PI),sin(285/180.0*M_PI),sin(286/180.0*M_PI),sin(287/180.0*M_PI),sin(288/180.0*M_PI),sin(289/180.0*M_PI),sin(290/180.0*M_PI),sin(291/180.0*M_PI),sin(292/180.0*M_PI),sin(293/180.0*M_PI),sin(294/180.0*M_PI),sin(295/180.0*M_PI),sin(296/180.0*M_PI),sin(297/180.0*M_PI),sin(298/180.0*M_PI),sin(299/180.0*M_PI),sin(300/180.0*M_PI),sin(301/180.0*M_PI),sin(302/180.0*M_PI),sin(303/180.0*M_PI),sin(304/180.0*M_PI),sin(305/180.0*M_PI),sin(306/180.0*M_PI),sin(307/180.0*M_PI),sin(308/180.0*M_PI),sin(309/180.0*M_PI),sin(310/180.0*M_PI),sin(311/180.0*M_PI),sin(312/180.0*M_PI),sin(313/180.0*M_PI),sin(314/180.0*M_PI),sin(315/180.0*M_PI),sin(316/180.0*M_PI),sin(317/180.0*M_PI),sin(318/180.0*M_PI),sin(319/180.0*M_PI),sin(320/180.0*M_PI),sin(321/180.0*M_PI),sin(322/180.0*M_PI),sin(323/180.0*M_PI),sin(324/180.0*M_PI),sin(325/180.0*M_PI),sin(326/180.0*M_PI),sin(327/180.0*M_PI),sin(328/180.0*M_PI),sin(329/180.0*M_PI),sin(330/180.0*M_PI),sin(331/180.0*M_PI),sin(332/180.0*M_PI),sin(333/180.0*M_PI),sin(334/180.0*M_PI),sin(335/180.0*M_PI),sin(336/180.0*M_PI),sin(337/180.0*M_PI),sin(338/180.0*M_PI),sin(339/180.0*M_PI),sin(340/180.0*M_PI),sin(341/180.0*M_PI),sin(342/180.0*M_PI),sin(343/180.0*M_PI),sin(344/180.0*M_PI),sin(345/180.0*M_PI),sin(346/180.0*M_PI),sin(347/180.0*M_PI),sin(348/180.0*M_PI),sin(349/180.0*M_PI),sin(350/180.0*M_PI),sin(351/180.0*M_PI),sin(352/180.0*M_PI),sin(353/180.0*M_PI),sin(354/180.0*M_PI),sin(355/180.0*M_PI),sin(356/180.0*M_PI),sin(357/180.0*M_PI),sin(358/180.0*M_PI),sin(359/180.0*M_PI)
++};
++
++Point Ellipse::pointAtAngle(const int a, Vec2f *normal = 0) const
+ {
+     double s = sin(angle/180.0*M_PI);
+     double c = cos(angle/180.0*M_PI);
+     Matx22f rot(c, -s,
+                 s, c);
+-    Vec2f v(cos(a/180.0*M_PI) * size.width/2.0,
+-            sin(a/180.0*M_PI) * size.height/2.0);
++    Vec2f v(cos_arr[a] * size.width*0.5,
++            cos_arr[a+360] * size.height*0.5);
+     v = rot * v;
+ 
+     if (normal) {
+         Vec2f &n = *normal;
+-        n = Vec2f(+cos(a/180.0*M_PI) * size.height/2.0, +sin(a/180.0*M_PI) * size.width/2.0);
++        n = Vec2f(+cos_arr[a] * size.height*0.5, +cos_arr[a+360] * size.width*0.5);
+         n = rot * n;
+     }
+     return Point(center.x + v[0], center.y + v[1]);
+@@ -166,9 +172,9 @@ void Ellipse::calcWeight(const Mat1b &bw, Mat3b *dbg, std::vector<Point> *points
+     unsigned ptsInRoi = 0;
+     Rect roi(Point(1, 1), bw.size() - Size(2, 2));
+ 
+-    for (int a = 0; a < nWeightPoints; a++) {
++    for (int a = 0; a < 360; a++) {
+         Vec2f normal;
+-        Point p = pointAtAngle(a * 360 / nWeightPoints, &normal);
++        Point p = pointAtAngle(a, &normal);
+         normal /= cv::norm(normal);
+         bool pOnEllipse = false;
+         if (roi.contains(p)) {
+@@ -189,8 +195,9 @@ void Ellipse::calcWeight(const Mat1b &bw, Mat3b *dbg, std::vector<Point> *points
+         }
+     }
+ 
+-    if (ptsInRoi >= nWeightPoints * 30 / 100)
++    if (ptsInRoi >= 108) {
+         weight = static_cast<float>(ptsOnEllipse) / ptsInRoi;
++    }
+     else
+         weight = 0;
+ }
+diff --git a/ellipse/ellipse.h b/ellipse/ellipse.h
+index 3b022d1..d90a504 100644
+--- a/ellipse/ellipse.h
++++ b/ellipse/ellipse.h
+@@ -14,7 +14,7 @@ public:
+     static Ellipse fit(const std::vector<cv::Point> &p);
+     static Ellipse invalid() { return Ellipse(); }
+ 
+-    cv::Point pointAtAngle(double a, cv::Vec2f *normal) const;
++    cv::Point pointAtAngle(const int a, cv::Vec2f *normal) const;
+ 
+     cv::Point2f f1, f2;
+ 
+diff --git a/meson.build b/meson.build
+index 9473ca0..22aa0af 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,5 @@
+ project('ellipses', 'cpp', default_options: [
+-  'cpp_args=-Og -g'
++  'cpp_args=-O3 -march=native -pg -no-pie -ffast-math',
++  'cpp_link_args=-O3 -march=native -pg -no-pie'
+ ])
+ subdir('ellipse')

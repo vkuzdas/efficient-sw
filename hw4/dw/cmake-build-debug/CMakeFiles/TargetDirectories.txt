@@ -1,0 +1,3 @@
+/home/kuzdavoj/hw4/epoll_server/cmake-build-debug/CMakeFiles/epoll_server.dir
+/home/kuzdavoj/hw4/epoll_server/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kuzdavoj/hw4/epoll_server/cmake-build-debug/CMakeFiles/rebuild_cache.dir

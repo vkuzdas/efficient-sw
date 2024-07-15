@@ -1,0 +1,15 @@
+# ninja log v5
+2	268	1680266446231578343	CMakeFiles/epoll_server.dir/EpollConnectionHandler.cc.o	11dab52bf7bb378f
+1	248	1680208905572539463	CMakeFiles/epoll_server.dir/EpollInstance.cc.o	6dd4d997f9d0896d
+1	37	1680266446007557264	CMakeFiles/epoll_server.dir/main.cc.o	f3124150b5719f00
+1	350	1680208905676549176	CMakeFiles/epoll_server.dir/EpollTimer.cc.o	ebcd429ef2df96e8
+1	37	1680208905360519662	CMakeFiles/epoll_server.dir/EpollEntry.cc.o	3e67e120cfcd294e
+1	300	1680265360573333405	CMakeFiles/epoll_server.dir/EpollStdIn.cc.o	6cb7f13fc02367d6
+268	342	1680266446303585119	epoll_server	fb028923534b6f3b
+0	23	1680266756057554791	build.ninja	70d6391b71a5224d
+2	258	1680266446223577590	CMakeFiles/epoll_server.dir/EpollHandler.cc.o	872472b268ec68f3
+1	22	1680266756057554791	build.ninja	70d6391b71a5224d
+0	36	1680266756101559053	CMakeFiles/epoll_server.dir/main.cc.o	f3124150b5719f00
+1	271	1680266756333581520	CMakeFiles/epoll_server.dir/EpollEchoHandler.cc.o	748d150b916cdaa1
+1	293	1680266756357583845	CMakeFiles/epoll_server.dir/EpollServerHandler.cc.o	a474fdb876d16176
+293	375	1680266756437591592	epoll_server	ad8140aa93de0812

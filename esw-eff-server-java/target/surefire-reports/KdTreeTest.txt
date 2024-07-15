@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: KdTreeTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.006 s <<< FAILURE! - in KdTreeTest
+insertEdge  Time elapsed: 0.006 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <4> but was: <2>
+	at KdTreeTest.insertEdge(KdTreeTest.java:20)
+
+insertPath  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <6> but was: <3>
+	at KdTreeTest.insertPath(KdTreeTest.java:37)
+

@@ -1,0 +1,191 @@
+Subject: [PATCH] smtn
+---
+Index: src/main/java/cz/cvut/fel/esw/shortestpath/search/Dijkstra.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cz/cvut/fel/esw/shortestpath/search/Dijkstra.java b/src/main/java/cz/cvut/fel/esw/shortestpath/search/Dijkstra.java
+--- a/src/main/java/cz/cvut/fel/esw/shortestpath/search/Dijkstra.java	(revision 9f91a4e755b451c92ea4dc4bb67a2eaff3cf5ffa)
++++ b/src/main/java/cz/cvut/fel/esw/shortestpath/search/Dijkstra.java	(date 1682156718911)
+@@ -6,6 +6,7 @@
+ import cz.cvut.fel.esw.shortestpath.util.BinaryHeap;
+ import cz.cvut.fel.esw.shortestpath.util.Heap;
+ 
++import java.lang.reflect.Array;
+ import java.util.*;
+ import java.util.function.ToIntFunction;
+ 
+@@ -22,8 +23,8 @@
+     private final int origin;
+ 
+     private final Heap<SingleObjState> heap;
+-    private final Map<Integer, Heap.Entry<SingleObjState>> seen;
+-    private final Set<Integer> closed;
++    private final Heap.Entry<SingleObjState>[] seen;
++    private final boolean[] closed;
+ 
+ 
+     Dijkstra(int origin, Graph<Node, Edge> graph, ToIntFunction<Edge> objectiveFunction, Direction direction) {
+@@ -32,8 +33,8 @@
+         this.direction = direction;
+         this.origin = origin;
+         this.heap = new BinaryHeap<>(Comparator.<SingleObjState>naturalOrder());
+-        this.seen = new HashMap<>();
+-        this.closed = new HashSet<>();
++        seen = new SingleObjState[graph.numberOfNodes()];
++        closed = new boolean[graph.numberOfNodes()];
+     }
+ 
+     /**
+@@ -81,30 +82,30 @@
+ 
+     private void encounter(SingleObjState state) {
+         Heap.Entry<SingleObjState> successorEntry = heap.insert(state);
+-        seen.put(state.getNodeId(), successorEntry);
++        seen[state.getNodeId()] = successorEntry;
+     }
+ 
+     private void encounterAgain(SingleObjState successor) {
+-        Heap.Entry<SingleObjState> seenEntry = seen.get(successor.getNodeId());
++        Heap.Entry<SingleObjState> seenEntry = seen[successor.getNodeId()];
+         if (successor.getObjective() < seenEntry.getValue().getObjective()) {
+             Heap.Entry<SingleObjState> newEntry = heap.decrease(seenEntry, successor);
+             if (newEntry != seenEntry) {
+-                seen.put(successor.getNodeId(), newEntry);
++                seen[successor.getNodeId()] = newEntry;
+             }
+ 
+         }
+     }
+ 
+     private boolean isInHeap(int successorId) {
+-        return seen.containsKey(successorId);
++        return seen[successorId] != null;
+     }
+ 
+     private void close(int nodeId) {
+-        closed.add(nodeId);
++        closed[nodeId] = true;
+     }
+ 
+     private boolean isClosed(int nodeId) {
+-        return closed.contains(nodeId);
++        return closed[nodeId];
+     }
+ 
+     public static Dijkstra createForward(int origin, Graph<Node, Edge> graph, ToIntFunction<Edge> objectiveFunction) {
+@@ -147,12 +148,12 @@
+ 
+ 
+         @Override
+-        public Integer getIndex() {
++        public int getIndex() {
+             return heapIndex;
+         }
+ 
+         @Override
+-        public void setIndex(Integer index) {
++        public void setIndex(int index) {
+             this.heapIndex = index;
+         }
+ 
+Index: src/main/java/cz/cvut/fel/esw/shortestpath/search/MultiObjectiveAStar.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cz/cvut/fel/esw/shortestpath/search/MultiObjectiveAStar.java b/src/main/java/cz/cvut/fel/esw/shortestpath/search/MultiObjectiveAStar.java
+--- a/src/main/java/cz/cvut/fel/esw/shortestpath/search/MultiObjectiveAStar.java	(revision 9f91a4e755b451c92ea4dc4bb67a2eaff3cf5ffa)
++++ b/src/main/java/cz/cvut/fel/esw/shortestpath/search/MultiObjectiveAStar.java	(date 1682155864804)
+@@ -87,7 +87,9 @@
+             Heap.Entry<SearchState> minEntry = heap.extractMinimum();
+             SearchState minState = minEntry.getValue();
+ 
+-            logger.trace("Extracted state in " + iterationCounter + ". iteration: " + minState);
++            if (logger.isTraceEnabled()) {
++                logger.trace("Extracted state in " + iterationCounter + ". iteration: " + minState);
++            }
+ 
+             opened.remove(minEntry);
+ 
+@@ -98,7 +100,9 @@
+             if (isGoal(minState)) {
+                 results.add(minState);
+                 solutions.addWithoutChecks(minEntry);
+-                logger.trace(minState);
++                if (logger.isTraceEnabled()) {
++                    logger.trace(minState);
++                }
+                 if (results.size() >= numberOfResults) return results;
+                 continue;
+             }
+@@ -107,7 +111,9 @@
+             expand(minState);
+         }
+ 
+-        logger.debug("Solutions found after " + iterationCounter + " iterations");
++        if (logger.isDebugEnabled()) {
++            logger.debug("Solutions found after " + iterationCounter + " iterations");
++        }
+         return results;
+     }
+ 
+Index: src/test/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeapTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeapTest.java b/src/test/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeapTest.java
+--- a/src/test/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeapTest.java	(revision 9f91a4e755b451c92ea4dc4bb67a2eaff3cf5ffa)
++++ b/src/test/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeapTest.java	(date 1682155864771)
+@@ -227,12 +227,12 @@
+         }
+ 
+         @Override
+-        public Integer getIndex() {
++        public int getIndex() {
+             return heapIndex;
+         }
+ 
+         @Override
+-        public void setIndex(Integer index) {
++        public void setIndex(int index) {
+             this.heapIndex = index;
+         }
+ 
+Index: src/main/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeap.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeap.java b/src/main/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeap.java
+--- a/src/main/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeap.java	(revision 9f91a4e755b451c92ea4dc4bb67a2eaff3cf5ffa)
++++ b/src/main/java/cz/cvut/fel/esw/shortestpath/util/BinaryHeap.java	(date 1682155864783)
+@@ -267,9 +267,9 @@
+ 
+     public interface IndexedEntry<TValue> extends Heap.Entry<TValue> {
+ 
+-        Integer getIndex();
++        int getIndex();
+ 
+-        void setIndex(Integer index);
++        void setIndex(int index);
+     }
+ 
+     private static class DefaultIndexedEntry<TValue> implements IndexedEntry<TValue> {
+@@ -292,12 +292,12 @@
+         }
+ 
+         @Override
+-        public Integer getIndex() {
++        public int getIndex() {
+             return heapIndex;
+         }
+ 
+         @Override
+-        public void setIndex(Integer index) {
++        public void setIndex(int index) {
+             this.heapIndex = index;
+         }
+ 
